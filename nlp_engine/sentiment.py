@@ -1,4 +1,9 @@
+import logging
+
 from transformers import pipeline
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class SentimentAnalyzer:
@@ -11,11 +16,20 @@ class SentimentAnalyzer:
     MODEL_NAME = "distilbert-base-uncased-finetuned-sst-2-english"
 
     def __init__(self):
-        self._pipeline = pipeline(
-            "sentiment-analysis",
-            model=self.MODEL_NAME,
-            return_all_scores=True,
-        )
+        logger.info("Loading model: %s", self.MODEL_NAME)
+        try:
+            self._pipeline = pipeline(
+                "sentiment-analysis",
+                model=self.MODEL_NAME,
+                return_all_scores=True,
+            )
+        except OSError as exc:
+            raise RuntimeError(
+                f"Failed to load model '{self.MODEL_NAME}'. Ensure you have "
+                f"an internet connection or the model is cached locally. "
+                f"Original error: {exc}"
+            ) from exc
+        logger.info("Model loaded")
 
     def predict(self, text):
         """Analyze sentiment of a single text.
@@ -38,6 +52,7 @@ class SentimentAnalyzer:
         :param texts: List of input text strings.
         :returns: List of result dicts.
         """
+        logger.debug("Batch prediction on %d texts", len(texts))
         batch_results = self._pipeline(texts)
         output = []
         for results in batch_results:

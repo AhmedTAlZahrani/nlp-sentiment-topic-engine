@@ -1,5 +1,7 @@
 # NLP Sentiment & Topic Engine
 
+![CI](https://github.com/AhmedTAlZahrani/nlp-sentiment-topic-engine/actions/workflows/ci.yml/badge.svg)
+
 Sentiment analysis (DistilBERT) and topic modeling (LDA) exposed via FastAPI.
 
 ## Install
