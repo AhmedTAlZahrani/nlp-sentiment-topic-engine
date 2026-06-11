@@ -8,8 +8,10 @@ Sentiment analysis (DistilBERT) and topic modeling (LDA) exposed via FastAPI.
 
 ```bash
 pip install -r requirements.txt
-python -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet')"
+python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
 ```
+
+Or run `./setup.sh` which does both steps.
 
 ## Run
 
@@ -39,6 +41,12 @@ print(analyzer.predict("Revenue exceeded expectations"))
 modeler = TopicModeler(n_topics=3)
 modeler.fit(corpus)
 print(modeler.get_topics())
+```
+
+## Tests
+
+```bash
+pytest tests/ -v
 ```
 
 ## Structure
